@@ -1,0 +1,30 @@
+//solidity version declaration
+pragma solidity ^0.6.7;
+
+//Import of the Chainlink Aggregator Interface
+import "https://github.com/smartcontractkit/chainlink/evm-contracts/src/v0.6/interfaces/AggregatorInterface.sol";
+
+contract AskPrice { 
+    
+    //declare priceFeed as an AggregatorInterface variable 
+    AggregatorInterface internal priceFeed;
+    uint public priceETH;
+    
+    //event Oracle 
+    event RequestEthereumPriceFulfilled(
+        bytes32 indexed requestId, 
+        uint256 indexed  price
+        );
+        
+    constructor () public {
+        //Precise the aggregator that we want to use (here 0x8468b2bDCE073A157E560AA4D9CcF6dB1DB98507)
+        priceFeed = AggregatorInterface(0x8468b2bDCE073A157E560AA4D9CcF6dB1DB98507);
+        }
+    
+    // Oracle function
+    function getLatestPrice() public returns (int256) {
+        priceETH = uint(priceFeed.latestAnswer());
+        return priceFeed.latestAnswer();
+    }
+
+}
